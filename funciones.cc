@@ -61,7 +61,9 @@ void CheckExtensionTXT(const std::string& TXT) {
 
 
 /**
-  * @brief Imprime cómo utilizar el programa y comprueba 
+  * @brief Comprueba si se le paso el numeero correcto de parametros y sus extensiones llamando a dos funciones mas
+  *        si falla envia un mensaje de error, con --help como parametro llama a la funcion que explica como funciona el
+  *        programa y como se usa
   */
 void Usage(int argc, char* argv[]) {
   std::string ayuda{argv[1]};
