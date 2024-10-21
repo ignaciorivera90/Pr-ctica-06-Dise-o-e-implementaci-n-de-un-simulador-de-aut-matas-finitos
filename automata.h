@@ -16,4 +16,42 @@
 
   * Historial de revisiones:
   *      20/10/2024 - Creacion (primera version) del codigo
+  *      21/10/2024 - Creacion (segunda version) del codigo
   */
+
+#ifndef AUTOMATA_H
+#define AUTOMATA_H
+
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <map>
+#include <string>
+
+#include "alfabeto.h"
+#include "estado.h"
+
+class Automata {
+ public:
+  //Constructor
+  Automata (const std::string& file_fa);
+
+  //Getters
+  const Estado& getInicio() const { return inicio_; }
+  const std::multimap<unsigned int, Estado>& getEstados() const { return estados_; }
+  const Alfabeto& getAlfabeto() const { return alfabeto_; }
+
+  //Metodos
+  void SimulacionFile(const std::string& file_txt);
+  void SimulacionCadena(const std::string& cadena);
+  void AddEstado(const Estado&);
+
+ private:
+  Estado inicio_;
+  std::multimap<unsigned int, Estado> estados_;
+  Alfabeto alfabeto_;
+};
+
+
+
+#endif
