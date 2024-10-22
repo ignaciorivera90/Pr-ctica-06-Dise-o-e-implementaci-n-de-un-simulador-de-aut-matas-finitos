@@ -37,55 +37,61 @@ Automata::Automata(const std::string &file_fa) {
   std::string aux_line;
 
   // Leer el alfabeto
-  std::getline(archivo_fa, aux_line);
-  for (char aux_sim : aux_line) {
-    if(aux_sim != ' ' && aux_sim != '&') {
-      alfabeto_.AddSimbolo(Simbolo(aux_sim));
+  if(std::getline(archivo_fa, aux_line)) {
+    for (char aux_sim : aux_line) {
+      if(aux_sim != ' ' && aux_sim != '&') {
+        alfabeto_.AddSimbolo(Simbolo(aux_sim));
+      }
     }
+  } else {
+    std::cerr << "El archivo de especificacion esta vacio" << std::endl;
+    exit(1);
   }
 
   //Leer el numero de estados
   unsigned int num_estados{0};
-  std::getline(archivo_fa, aux_line);
-  if (!aux_line.empty()) {
-    for (char chr : aux_line) {
-      if (!std::isdigit(chr)) {
-        std::cerr << "El numero de estados tiene que ser un numero" << std::endl;
+  if(std::getline(archivo_fa, aux_line)) {
+    if (!aux_line.empty()) {
+      for (char chr : aux_line) {
+        if (!std::isdigit(chr)) {
+          std::cerr << "El numero de estados tiene que ser un numero" << std::endl;
+          exit(1);
+        }
+      }
+      num_estados = std::stoi(aux_line);
+      if(num_estados <= 0) {
+        std::cerr << "Error: el numero de estados no puede ser 0 o negativo" << std::endl;
         exit(1);
       }
-    }
-    num_estados = std::stoi(aux_line);
-    if(num_estados <= 0) {
-      std::cerr << "Error: el numero de estados no puede ser 0 o negativo" << std::endl;
+    } else {
+      std::cerr << "Error: El numero de estados mal introducidos" << std::endl;
       exit(1);
     }
-  } else {
-    std::cerr << "Error: El numero de estados mal introducidos" << std::endl;
-    exit(1);
   }
 
   //Leer el numero del estado de arranque
   unsigned int inicio{0};
-  std::getline(archivo_fa, aux_line);
-  if (!aux_line.empty()) {
-    for (char chr : aux_line) {
-      if (!std::isdigit(chr)) {
-        std::cerr << "El estado de arranque tiene que ser un numero" << std::endl;
+  if(std::getline(archivo_fa, aux_line)) {
+    if (!aux_line.empty()) {
+      for (char chr : aux_line) {
+        if (!std::isdigit(chr)) {
+          std::cerr << "El estado de arranque tiene que ser un numero" << std::endl;
+          exit(1);
+        }
+      }
+      inicio = std::stoi(aux_line);
+      if(num_estados < 0) {
+        std::cerr << "Error: el estado de arranque no puede ser negativo" << std::endl;
         exit(1);
       }
-    }
-    inicio = std::stoi(aux_line);
-    if(num_estados < 0) {
-      std::cerr << "Error: el estado de arranque no puede ser negativo" << std::endl;
+      if(inicio >= num_estados) {
+        std::cerr << "Error: El estado de arranque tiene que estar entre 0 y " << num_estados << std::endl;
+        exit(1);
+      }
+    } else {
+      std::cerr << "Error: El estado de arranque esta mal introducido" << std::endl;
       exit(1);
     }
-    if(inicio >= num_estados) {
-      std::cerr << "Error: El estado de arranque tiene que estar entre 0 y " << num_estados << std::endl;
-      exit(1);
-    }
-  } else {
-    std::cerr << "Error: El estado de arranque esta mal introducido" << std::endl;
-    exit(1);
   }
 
   //Leer cada estado
@@ -96,25 +102,23 @@ Automata::Automata(const std::string &file_fa) {
   for(unsigned i{0}; i < num_estados; ++i) {
     if(std::getline(archivo_fa, aux_line)) {
       std::istringstream linea_estado(aux_line);
-      linea_estado >> id;
+      linea_estado >> id >> aceptado >> num_transiciones;
       if (id >= num_estados) {
         std::cerr << "Error: Un estado no se encuentra en el rango de los estado, 0 - " << num_estados - 1 << std::endl;
         exit(1);
       }
-      linea_estado >> aceptado;
-      linea_estado >> num_transiciones;
 
       Estado estado_aux(id, aceptado, num_transiciones);
 
       //Procesando las transiciones
-      for(unsigned j{0}; j < estado_aux.getNumTransiciones(); ++j) {
+      for(unsigned j{0}; j < num_transiciones; ++j) {
         char simbolo_aux;
         unsigned int destino_trans;
         if(linea_estado >> simbolo_aux >> destino_trans) {
           Simbolo simbolo_aux_trans{simbolo_aux};
           
           //Ver si el simbolo de transicion pertene al alfabeto
-          if(!alfabeto_.Find(simbolo_aux_trans) && simbolo_aux_trans.getSimbolo() != '&') {
+          if(alfabeto_.Find(simbolo_aux_trans) && simbolo_aux_trans.getSimbolo() != '&') {
               std::cerr << "Error: un simbolo de una de las transiciones no pertenece al alfabeto" << std::endl;
               std::cerr << "El simbolo que no pertenece es " << simbolo_aux_trans << std::endl;
               exit(1);
@@ -128,6 +132,7 @@ Automata::Automata(const std::string &file_fa) {
           }
 
           estado_aux.IngrearTransicion(simbolo_aux_trans, destino_trans);
+          
         } else {
           std::cerr << "Error: incorrecta forma de colocar las transiciones" << std::endl;
           exit(1);

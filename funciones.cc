@@ -66,6 +66,10 @@ void CheckExtensionTXT(const std::string& TXT) {
   *        programa y como se usa
   */
 void Usage(int argc, char* argv[]) {
+  if(argc < 2) {
+    std::cerr << "Error: Se requieren parámetros. Uso: " << argv[0] << " <input.fa> <input.txt>" << std::endl;
+    exit(1);
+  }
   std::string ayuda{argv[1]};
   if (ayuda == "--help") {
     PrintProgramPurpose();
