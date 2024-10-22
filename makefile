@@ -1,6 +1,6 @@
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall
-SRCS = 
+SRCS = alfabeto.cc automata.cc cadena.cc estado.cc funciones.cc main.cc simbolo.cc
 OUTPUT = p06_automata_simulator
 
 all: $(OUTPUT)

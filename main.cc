@@ -24,6 +24,6 @@
 int main(int argc, char* argv[]) {
   Usage(argc, argv);
   Automata larry(argv[1]);
-  larry.SimulacionFile(argv[2]);
+  //larry.SimulacionFile(argv[2]);
   return 0;
 }

@@ -27,9 +27,12 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <sstream>
+#include <utility>
 
 #include "alfabeto.h"
 #include "estado.h"
+#include "simbolo.h"
 
 class Automata {
  public:

@@ -43,6 +43,7 @@ class Estado {
 
   //Metodos de adicion
   void AddTransicion(Simbolo, unsigned int);
+  void IngrearTransicion(Simbolo, unsigned int);
 
  private:
   unsigned int id_;

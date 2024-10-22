@@ -74,6 +74,10 @@ bool Cadena::operator==(const Cadena& cadena) const {
   return cadena_ == cadena.getCadena();
 }
 
+const Simbolo &Cadena::operator[](unsigned int i) const {
+  return getCadena()[i];
+}
+
 /**
  * @brief Overload of << operator for Chain class
  * @param std::ostream  

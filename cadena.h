@@ -48,6 +48,8 @@ class Cadena {
   bool operator<(const Cadena&) const;
   bool operator==(const Cadena&) const;
 
+  const Simbolo& operator[](unsigned int) const;
+
  private:
   std::vector<Simbolo> cadena_;
 

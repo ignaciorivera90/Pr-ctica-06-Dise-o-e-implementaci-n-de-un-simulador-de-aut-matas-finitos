@@ -36,6 +36,15 @@ void Estado::AddTransicion(Simbolo simbolo, unsigned int id_estado_transicion) {
 
 
 /**
+ * @brief Añade las transiciones iniciales
+ * @param simbolo: es el simbolo que produce la transicion
+ * @param id_estado_transicion: es el id del el estado de destino
+ */
+void Estado::IngrearTransicion(Simbolo simbolo, unsigned int id_estado_transicion) {
+  transiciones_.insert({simbolo, id_estado_transicion});
+}
+
+/**
  * @brief Overload of operator << for State class
  * @param ostream
  * @param Estado
